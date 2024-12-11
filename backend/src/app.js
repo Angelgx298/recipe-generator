@@ -13,6 +13,10 @@ export const createApp = () => {
     // Rutas
     app.use("/api/recipes", recipeRoutes);
 
+    app.get("/", function () {
+        return "Hola mundo";
+    });
+
     // Manejo de errores
     app.use(errorHandler);
 
