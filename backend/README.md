@@ -35,7 +35,7 @@ Este backend proporciona un servicio de generación de recetas utilizando la API
     {
       "ingredients": ["array de ingredientes"],
       "dietPreference": "preferencia dietética (opcional)",
-      "maxPreparationTime": número en minutos (opcional)
+      "maxPreparationTime": "número en minutos (opcional)"
     }
     ```
 *   **Respuesta exitosa (200 OK)**:

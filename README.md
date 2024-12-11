@@ -2,6 +2,8 @@
 
 Este proyecto es una aplicación web que permite a los usuarios generar recetas personalizadas basadas en los ingredientes que tienen disponibles, sus preferencias dietéticas (opcional) y el tiempo máximo de preparación deseado. La aplicación se compone de un frontend desarrollado con React y un backend desarrollado con Node.js.
 
+![Ejemplo de uso](/imgs/ejemplo.gif "Ejemplo de uso")
+
 ## Tecnologías Principales
 
 *   **Frontend:**
