@@ -1,7 +1,8 @@
 import "./App.css";
-import IngredientInput from "./ingredient-input-component";
+import Index from "./components/RecipeGenerator/Index";
+
 function App() {
-    return <IngredientInput />;
+    return <Index />;
 }
 
 export default App;
