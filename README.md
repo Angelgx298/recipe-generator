@@ -28,7 +28,7 @@ El proyecto utiliza variables de entorno para la configuración. Debes crear un 
 *   **`.env` (Raíz del proyecto):**
     *   `PORT`: Puerto del servidor backend (predeterminado: `5000`).
 *   **`backend/.env`:**
-    *   `GROQ_API_KEY`: Clave de API para el servicio Groq, oculta por motivos de seguridad.
+    *   `GROQ_API_KEY`: Clave de API para el servicio Groq.
     *   `NODE_ENV`: Entorno de ejecución (`development` o `production`).
 
 ## Inicio del Proyecto
