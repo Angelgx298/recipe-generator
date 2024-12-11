@@ -131,4 +131,4 @@ Este backend proporciona un servicio de generación de recetas utilizando la API
 *   Las respuestas de la API incluyen mensajes en español para facilitar la comprensión y el uso del sistema.
 *   Se recomienda utilizar un cliente API como Postman o Insomnia para probar los endpoints.
 
-Esta documentación proporciona una visión general clara y concisa del backend del generador de recetas.  Para cualquier duda o problema, por favor consulta el código fuente o contacta con el equipo de desarrollo.
+Para cualquier duda o problema contáctame en <a href="mailto:angelruiznadal@gmail.com">angelruiznadal@gmail.com</a>
