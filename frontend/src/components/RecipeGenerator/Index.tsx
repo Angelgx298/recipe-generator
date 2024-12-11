@@ -32,7 +32,7 @@ const RecipeGenerator: React.FC = () => {
                     </h1>
 
                     <div className="space-y-6">
-                        <div className="flex space-x-3">
+                        <div className="flex flex-col sm:flex-row gap-3">
                             <input
                                 type="text"
                                 value={currentIngredient}
@@ -40,14 +40,14 @@ const RecipeGenerator: React.FC = () => {
                                     setCurrentIngredient(e.target.value)
                                 }
                                 placeholder="Ingrediente (ej. pollo, arroz)"
-                                className="flex-grow px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
                                 onKeyPress={(e) =>
                                     e.key === "Enter" && addIngredient()
                                 }
                             />
                             <button
                                 onClick={addIngredient}
-                                className="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transform hover:scale-105 transition-all duration-200 shadow-md"
+                                className="w-full sm:w-auto px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transform hover:scale-105 transition-all duration-200 shadow-md"
                             >
                                 Añadir
                             </button>
