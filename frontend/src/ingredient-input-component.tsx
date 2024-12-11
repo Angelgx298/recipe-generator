@@ -24,7 +24,7 @@ const CONSTANTS = {
     MAX_INGREDIENTS: 20,
     MIN_PREP_TIME: 1,
     MAX_PREP_TIME: 480,
-    API_URL: "http://localhost:5000/api/recipes",
+    API_URL: "http://localhost:5000/api/recipes/generate",
 } as const;
 
 const IngredientInput: React.FC = () => {
@@ -68,26 +68,37 @@ const IngredientInput: React.FC = () => {
         setRecipe(null);
 
         try {
+            const prepTime = maxPreparationTime
+                ? parseInt(maxPreparationTime)
+                : null;
+
             const response = await fetch(CONSTANTS.API_URL, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
                 body: JSON.stringify({
                     ingredients,
                     dietPreference,
-                    maxPreparationTime: maxPreparationTime
-                        ? parseInt(maxPreparationTime)
-                        : null,
+                    maxPreparationTime: prepTime,
                 }),
             });
 
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(
-                    errorData.message || "Error en la respuesta del servidor"
+                    errorData.error?.message ||
+                        "Error en la respuesta del servidor"
                 );
             }
 
             const recipeData = await response.json();
+
+            if (!recipeData || !recipeData.title) {
+                throw new Error("Formato de receta inválido");
+            }
+
             setRecipe(recipeData);
         } catch (error) {
             console.error("Error al obtener receta:", error);
