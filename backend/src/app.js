@@ -13,8 +13,8 @@ export const createApp = () => {
     // Rutas
     app.use("/api/recipes", recipeRoutes);
 
-    app.get("/", function () {
-        return "Hola mundo";
+    app.get("/", function (req, res) {
+        res.send("Hola mundo");
     });
 
     // Manejo de errores
