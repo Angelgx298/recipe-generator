@@ -27,7 +27,7 @@ const RecipeGenerator: React.FC = () => {
         <div className="min-h-screen bg-gradient-to-br to-indigo-100 flex items-center justify-center">
             <div className="max-w-3xl w-full mx-auto bg-white rounded-2xl shadow-xl overflow-hidden m-2 p-2 sm:p-6 md:p-8 lg:m-8">
                 <div className="p-2 sm:p-6 md:p-8">
-                    <h1 className="text-xl sm:text-3xl font-bold text-gray-800 mb-4 sm:mb-6 md:mb-8 text-center">
+                    <h1 className="text-3xl sm:text-3xl font-bold text-gray-800 mb-4 sm:mb-6 md:mb-8 text-center">
                         Generador de Recetas con IA
                     </h1>
 
