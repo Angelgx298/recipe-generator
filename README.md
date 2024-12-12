@@ -11,10 +11,12 @@ Este proyecto es una aplicación web que permite a los usuarios generar recetas 
     *   [TypeScript](https://www.typescriptlang.org/): Superset de JavaScript que añade tipado estático.
     *   [Tailwind CSS](https://tailwindcss.com/): Framework CSS utility-first.
     *   [Vite](https://vitejs.dev/): Herramienta de desarrollo y empaquetado.
+    *   [Vercel](https://vercel.com/): Despliegue de la aplicación.
 *   **Backend:**
     *   [Node.js](https://nodejs.org/): Entorno de ejecución de JavaScript del lado del servidor.
     *   [Express.js](https://expressjs.com/): Framework web para Node.js.
     *   [Groq API](https://groq.com/): API para el modelo de lenguaje Mixtral-8x7b-32768.
+    *   [Render](https://render.com/): Despliegue del servidor web.
 
 ## Estructura del Proyecto
 *   **`backend/`**: Contiene el código fuente del backend.
