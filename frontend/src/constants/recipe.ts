@@ -1,3 +1,5 @@
+import { DietOption } from "../types/recipe";
+
 export const CONSTANTS = {
     MAX_INGREDIENTS: 20,
     MIN_PREP_TIME: 1,
@@ -6,7 +8,7 @@ export const CONSTANTS = {
 } as const;
 
 export const dietOptions: DietOption[] = [
-    { value: "", label: "Ninguna" },
+    { value: "", label: "Tipo de dieta" },
     { value: "vegetarian", label: "Vegetariana" },
     { value: "vegan", label: "Vegana" },
     { value: "gluten-free", label: "Sin Gluten" },
