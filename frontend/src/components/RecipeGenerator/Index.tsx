@@ -91,6 +91,16 @@ const RecipeGenerator: React.FC = () => {
                         {recipe && <RecipeDetails recipe={recipe} />}
                     </div>
                 </div>
+                <div className="text-center text-gray-400 text-xs py-3">
+                    <a 
+                        href="https://github.com/Angelgx298"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-gray-600 transition-colors"
+                    >
+                        Desarrollado por Ángel Ruiz Nadal
+                    </a>
+                </div>
             </div>
         </div>
     );
