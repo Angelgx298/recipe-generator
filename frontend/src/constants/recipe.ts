@@ -4,7 +4,7 @@ export const CONSTANTS = {
     MAX_INGREDIENTS: 20,
     MIN_PREP_TIME: 1,
     MAX_PREP_TIME: 480,
-    API_URL: "https://recipe-generator-1-qbqi.onrender.com/api/recipes/generate" ,
+    API_URL: "https://localhost:5000/api/recipes/generate" ,
 } as const;
 
 export const dietOptions: DietOption[] = [
