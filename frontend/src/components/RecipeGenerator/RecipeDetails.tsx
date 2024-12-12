@@ -8,7 +8,7 @@ interface RecipeDetailsProps {
 export const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe }) => {
     return (
         <div className="mt-8 space-y-6 bg-gray-50 p-6 rounded-xl">
-            <h2 className="text-3xl font-bold text-gray-800 border-b pb-4">
+            <h2 className="text-xl font-bold text-gray-800 border-b pb-4">
                 {recipe.title}
             </h2>
 
