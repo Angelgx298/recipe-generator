@@ -37,7 +37,7 @@ export class RecipeService {
                     content: prompt,
                 },
             ],
-            model: "mixtral-8x7b-32768",
+            model: "llama3-8b-8192",
             temperature: 0.7,
         });
     }

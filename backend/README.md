@@ -2,7 +2,7 @@
 
 ## Descripción General
 
-Este backend proporciona un servicio de generación de recetas utilizando la API de Groq con el modelo `Mixtral-8x7b-32768`. El sistema acepta una lista de ingredientes, preferencias dietéticas opcionales y un tiempo máximo de preparación opcional para generar recetas personalizadas.
+Este backend proporciona un servicio de generación de recetas utilizando la API de Groq con el modelo `Llama3-8b-8192`. El sistema acepta una lista de ingredientes, preferencias dietéticas opcionales y un tiempo máximo de preparación opcional para generar recetas personalizadas.
 
 ## Configuración del Entorno
 
