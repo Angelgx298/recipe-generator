@@ -15,7 +15,7 @@ Este proyecto es una aplicación web que permite a los usuarios generar recetas 
 *   **Backend:**
     *   [Node.js](https://nodejs.org/): Entorno de ejecución de JavaScript del lado del servidor.
     *   [Express.js](https://expressjs.com/): Framework web para Node.js.
-    *   [Groq API](https://groq.com/): API para el modelo de lenguaje Mixtral-8x7b-32768.
+    *   [Groq API](https://groq.com/): API para el modelo de lenguaje Llama3-8b-8192.
     *   [Render](https://render.com/): Despliegue del servidor web.
 
 ## Estructura del Proyecto
