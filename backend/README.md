@@ -1,134 +1,336 @@
-# Documentación del Backend - Generador de Recetas
+# Backend API - Recipe Generator
 
-## Descripción General
+RESTful API service for AI-powered recipe generation using Groq's Llama-3.3-70b-versatile model.
 
-Este backend proporciona un servicio de generación de recetas utilizando la API de Groq con el modelo `Llama-3.3-70b-versatile`. El sistema acepta una lista de ingredientes, preferencias dietéticas opcionales y un tiempo máximo de preparación opcional para generar recetas personalizadas.
+## 📋 Table of Contents
 
-## Configuración del Entorno
+- [Overview](#-overview)
+- [Tech Stack](#-tech-stack)
+- [Architecture](#-architecture)
+- [API Endpoints](#-api-endpoints)
+- [Getting Started](#-getting-started)
+- [Environment Variables](#-environment-variables)
+- [Error Handling](#-error-handling)
+- [Security](#-security)
 
-### Variables de Entorno (.env)
+## 🎯 Overview
 
-*   **`PORT`**: Puerto del servidor. (Predeterminado: `5000`)
-*   **`GROQ_API_KEY`**: Clave de API para el servicio Groq.
-*   **`NODE_ENV`**: Entorno de ejecución. (`development` / `production`)
+This Express.js backend provides a robust API for generating personalized recipes based on:
 
-## Estructura del Proyecto
+- Available ingredients
+- Dietary preferences (vegetarian, vegan, gluten-free)
+- Maximum preparation time constraints
 
-### Directorios Principales
+## 🛠️ Tech Stack
 
-*   **`/src`**: Código fuente principal.
-*   **`/config`**: Configuraciones del sistema.
-*   **`/controllers`**: Controladores de la aplicación.
-*   **`/middleware`**: Middleware personalizado.
-*   **`/routes`**: Definición de rutas.
-*   **`/services`**: Lógica de negocio.
-*   **`/utils`**: Utilidades generales.
+| Technology                                     | Purpose                                 |
+| ---------------------------------------------- | --------------------------------------- |
+| [Node.js](https://nodejs.org/)                 | Runtime environment                     |
+| [Express.js](https://expressjs.com/)           | Web framework                           |
+| [Groq AI](https://groq.com/)                   | LLM inference (Llama-3.3-70b-versatile) |
+| [CORS](https://www.npmjs.com/package/cors)     | Cross-origin resource sharing           |
+| [dotenv](https://www.npmjs.com/package/dotenv) | Environment variable management         |
 
-## API Endpoints
+## 🏗️ Architecture
 
-### Generación de Recetas
+```
+src/
+├── config/
+│   └── environment.js      # Environment configuration
+├── controllers/
+│   └── recipeController.js # Request handlers
+├── middleware/
+│   ├── errorHandler.js     # Global error handling
+│   └── requestValidator.js # Input validation
+├── routes/
+│   ├── recipeRoutes.js     # Recipe endpoints
+│   └── healthRoutes.js     # Health check
+├── services/
+│   └── recipeService.js    # Business logic & AI integration
+├── utils/
+│   └── jsonParser.js       # JSON parsing utilities
+└── app.js                  # Express app configuration
+```
 
-*   **Ruta**: `/api/recipes/generate`
-*   **Método**: `POST`
-*   **Body**:
-    ```json
-    {
-      "ingredients": ["array de ingredientes"],
-      "dietPreference": "preferencia dietética (opcional)",
-      "maxPreparationTime": "número en minutos (opcional)"
-    }
+### Request Flow
+
+```
+Client Request
+    ↓
+Express Router
+    ↓
+Validation Middleware
+    ↓
+Controller
+    ↓
+Service Layer
+    ↓
+Groq AI API
+    ↓
+Response Formatting
+    ↓
+Client Response
+```
+
+## 📡 API Endpoints
+
+### Generate Recipe
+
+**Endpoint:** `POST /api/recipes/generate`
+
+Generate a personalized recipe based on ingredients and preferences.
+
+**Request Body:**
+
+```json
+{
+    "ingredients": ["chicken", "rice", "vegetables"],
+    "dietPreference": "vegetarian",
+    "maxPreparationTime": 30
+}
+```
+
+**Response (200 OK):**
+
+```json
+{
+    "title": "Vegetarian Rice Bowl",
+    "ingredients": [
+        "1 cup rice",
+        "2 cups mixed vegetables",
+        "1 tbsp olive oil"
+    ],
+    "instructions": [
+        "Cook rice according to package instructions",
+        "Sauté vegetables in olive oil",
+        "Combine and serve"
+    ],
+    "preparationTime": 25,
+    "difficulty": "Easy"
+}
+```
+
+**Error Response (400/500):**
+
+```json
+{
+    "message": "Descriptive error message",
+    "status": 400
+}
+```
+
+### Health Check
+
+**Endpoint:** `GET /health`
+
+Check API availability and status.
+
+**Response (200 OK):**
+
+```json
+{
+    "status": "ok",
+    "message": "Server is running",
+    "timestamp": "2025-11-20T10:30:00.000Z"
+}
+```
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18.x or higher
+- pnpm (recommended) or npm
+- Groq API Key ([Get one here](https://console.groq.com/))
+
+### Installation
+
+1. **Navigate to backend directory:**
+
+    ```bash
+    cd backend
     ```
-*   **Respuesta exitosa (200 OK)**:
-    ```json
-    {
-      "title": "Nombre de la receta",
-      "ingredients": ["ingredientes"],
-      "instructions": ["pasos"],
-      "preparationTime": "tiempo en minutos",
-      "difficulty": "nivel de dificultad"
-    }
-    ```
-*   **Respuesta de error (400 Bad Request, 500 Internal Server Error, etc.)**:
-    ```json
-    {
-      "message": "Mensaje de error descriptivo",
-      "status": "Código de estado HTTP"
-    }
+
+2. **Install dependencies:**
+
+    ```bash
+    pnpm install
     ```
 
-## Componentes Principales
+3. **Configure environment:**
+   Create a `.env` file (see [Environment Variables](#-environment-variables))
 
-### `RecipeService`
+4. **Start the server:**
 
-*   Gestiona la lógica de negocio para la generación de recetas.
-*   Construye prompts para la API de Groq basados en los datos de entrada.
-*   Realiza peticiones a la API de Groq.
-*   Procesa y valida las respuestas de la API de Groq.
-*   Formatea la respuesta para ser enviada al cliente.
+    ```bash
+    # Development
+    pnpm dev
+
+    # Production
+    pnpm start
+    ```
+
+The server will start on `http://localhost:5000` (or your configured PORT).
+
+## 🔧 Environment Variables
+
+Create a `.env` file in the backend directory:
+
+```env
+# Required
+GROQ_API_KEY=your_groq_api_key_here
+
+# Optional (with defaults)
+PORT=5000
+NODE_ENV=development
+FRONTEND_URL=http://localhost:5173
+```
+
+### Variable Descriptions
+
+| Variable       | Description                              | Default                 |
+| -------------- | ---------------------------------------- | ----------------------- |
+| `GROQ_API_KEY` | Groq AI API authentication key           | **Required**            |
+| `PORT`         | Server port number                       | `5000`                  |
+| `NODE_ENV`     | Environment (`development`/`production`) | `development`           |
+| `FRONTEND_URL` | Allowed CORS origin                      | `http://localhost:5173` |
+
+## 🛡️ Error Handling
+
+### Centralized Error Handler
+
+The API implements a global error handling middleware that:
+
+- Logs errors to console for debugging
+- Returns consistent error responses
+- Sanitizes error messages for production
+- Includes appropriate HTTP status codes
+
+### Error Response Format
+
+```json
+{
+    "message": "User-friendly error description",
+    "status": 400
+}
+```
+
+### Common Error Codes
+
+| Code | Description                                  |
+| ---- | -------------------------------------------- |
+| 400  | Bad Request - Invalid input data             |
+| 401  | Unauthorized - Invalid API key               |
+| 500  | Internal Server Error - Server/AI API issues |
+
+## 🔒 Security
+
+### Implemented Security Measures
+
+- ✅ **CORS Protection**: Configured allowed origins
+- ✅ **Input Validation**: Request data validation middleware
+- ✅ **Environment Variables**: Secure secret management
+- ✅ **Error Sanitization**: No sensitive data in error responses
+- ✅ **Rate Limiting**: (Recommended for production)
+
+### CORS Configuration
+
+```javascript
+const corsOptions = {
+    origin:
+        NODE_ENV === "production"
+            ? [FRONTEND_URL]
+            : ["http://localhost:5173", "http://localhost:3000"],
+    credentials: true,
+    optionsSuccessStatus: 200,
+};
+```
+
+## 📦 Core Components
+
+### RecipeService
+
+**Purpose:** Business logic for recipe generation
+
+**Responsibilities:**
+
+- Construct AI prompts from user input
+- Make requests to Groq AI API
+- Parse and validate AI responses
+- Format responses for client consumption
 
 ### Middleware
 
-*   **`validateRecipeRequest`**: Valida las solicitudes de generación de recetas, asegurando que los datos de entrada sean válidos y cumplan con los requisitos.
-*   **`errorHandler`**: Manejo centralizado de errores. Registra errores en la consola y devuelve respuestas de error estructuradas con un formato consistente.
+#### `validateRecipeRequest`
 
-### Utilidades
+- Validates incoming recipe generation requests
+- Ensures required fields are present
+- Validates data types and constraints
 
-*   **`jsonParser`**: Utilidad para analizar respuestas JSON de la API de Groq, manejando posibles errores de parsing.
+#### `errorHandler`
 
-## Manejo de Errores
+- Centralized error handling
+- Consistent error response formatting
+- Error logging for debugging
 
-*   El sistema incluye un manejador de errores centralizado que:
-    *   Registra errores en la consola para facilitar la depuración.
-    *   Devuelve respuestas de error estructuradas con un formato consistente, incluyendo un mensaje descriptivo y el código de estado HTTP.
-*   Esto asegura una experiencia consistente para el cliente y facilita la identificación y resolución de problemas.
+### Utilities
 
-## Seguridad
+#### `jsonParser`
 
-*   **Implementación de CORS**: Permite el acceso al backend desde dominios específicos, evitando problemas de seguridad relacionados con CORS.
-*   **Validación de datos de entrada**: Valida los datos de entrada para prevenir ataques de inyección y otros problemas de seguridad.
-*   **Manejo seguro de variables de entorno**: Las variables de entorno se utilizan para almacenar información sensible, como la clave de API de Groq, y se manejan de forma segura.
+- Safely parse JSON responses from Groq AI
+- Handle malformed JSON gracefully
+- Extract JSON from markdown code blocks
 
-## Requisitos del Sistema
+## 🧪 Testing
 
-*   [Node.js](https://nodejs.org/) (versión recomendada: v18 o superior)
-*   [npm](https://www.npmjs.com/) o [yarn](https://yarnpkg.com/) (gestores de paquetes)
-*   Conexión a Internet para acceder a la API de Groq.
+Run the backend tests:
 
-## Inicio del Servidor
+```bash
+# Unit tests (if available)
+pnpm test
 
-1.  **Instalar dependencias**:
-    ```bash
-    npm install
-    ```
-    o
-    ```bash
-    yarn install
-    ```
-2.  **Configurar variables de entorno**:
-    *   Crea un archivo `.env` en la raíz del proyecto.
-    *   Añade las variables de entorno necesarias:
-        ```env
-        PORT=5000
-        GROQ_API_KEY=tu_clave_api_groq
-        NODE_ENV=development
-        ```
-        *   Reemplaza `tu_clave_api_groq` con tu clave de API real de Groq.
-        *   Ajusta `NODE_ENV` a `production` cuando despliegues el backend en un entorno de producción.
-3.  **Iniciar el servidor**:
-    ```bash
-    npm start
-    ```
-    o
-    ```bash
-    yarn start
-    ```
-    *   El servidor se iniciará en el puerto especificado en la variable de entorno `PORT` (o en el puerto 5000 por defecto).
+# Manual API testing
+curl -X POST http://localhost:5000/api/recipes/generate \
+  -H "Content-Type: application/json" \
+  -d '{"ingredients":["chicken","rice"]}'
+```
 
-## Consideraciones de Desarrollo
+## 📊 Development
 
-*   El sistema está configurado para desarrollo por defecto (`NODE_ENV=development`).
-*   Los logs detallados están habilitados para depuración en el entorno de desarrollo, proporcionando información útil sobre el flujo de la aplicación y los posibles errores.
-*   Las respuestas de la API incluyen mensajes en español para facilitar la comprensión y el uso del sistema.
-*   Se recomienda utilizar un cliente API como Postman o Insomnia para probar los endpoints.
+### Development Mode
 
-Para cualquier duda o problema contáctame en <a href="mailto:angelruiznadal@gmail.com">angelruiznadal@gmail.com</a>
+```bash
+pnpm dev
+```
+
+Features:
+
+- Detailed logging for debugging
+- Auto-restart on file changes (with nodemon)
+- Comprehensive error messages
+
+### Production Mode
+
+```bash
+NODE_ENV=production pnpm start
+```
+
+Features:
+
+- Optimized logging
+- Production CORS settings
+- Sanitized error messages
+- Enhanced security
+
+## 📧 Contact
+
+**Ángel Ruiz Nadal**
+
+- Email: [angelruiznadal@gmail.com](mailto:angelruiznadal@gmail.com)
+- GitHub: [@Angelgx298](https://github.com/Angelgx298)
+- LinkedIn: [linkedin.com/in/angel-ruiz-nadal](https://www.linkedin.com/in/angel-ruiz-nadal)
+
+---
+
+[← Back to Main README](../README.md)
+

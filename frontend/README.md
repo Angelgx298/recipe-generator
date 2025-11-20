@@ -1,167 +1,428 @@
-# Documentación del Frontend - Generador de Recetas
+# Frontend Application - Recipe Generator
 
-## Descripción General
+Modern React application with TypeScript and Tailwind CSS for AI-powered recipe generation.
 
-Esta aplicación web, desarrollada con React, permite a los usuarios generar recetas personalizadas. Los usuarios pueden ingresar una lista de ingredientes, especificar sus preferencias dietéticas (opcional) y un tiempo máximo de preparación (opcional). La aplicación se encarga de enviar esta información al backend y mostrar la receta generada de forma clara y organizada.
+## 📋 Table of Contents
 
-## Tecnologías Principales
+- [Overview](#-overview)
+- [Tech Stack](#-tech-stack)
+- [Architecture](#-architecture)
+- [Components](#-components)
+- [Getting Started](#-getting-started)
+- [Features](#-features)
+- [Development](#-development)
 
-*   **React:** Biblioteca de JavaScript para construir interfaces de usuario interactivas y dinámicas.
-*   **TypeScript:** Superset de JavaScript que añade tipado estático, mejorando la mantenibilidad y la detección de errores.
-*   **Tailwind CSS:** Framework CSS utility-first para un diseño rápido, flexible y consistente.
-*   **Vite:** Herramienta de desarrollo y empaquetado que ofrece un inicio instantáneo y una experiencia de desarrollo optimizada.
+## 🎯 Overview
 
-## Estructura del Proyecto
+A responsive, user-friendly interface that allows users to:
 
-### Directorios Principales
+- Input available ingredients
+- Select dietary preferences
+- Specify maximum preparation time
+- View AI-generated recipes with detailed instructions
 
-*   **`/src`**: Contiene el código fuente principal de la aplicación.
-*   **`/src/components`**: Componentes React reutilizables que conforman la interfaz de usuario.
-*   **`/src/hooks`**: Hooks personalizados para encapsular la lógica de la aplicación y reutilizarla en diferentes componentes.
-*   **`/src/services`**: Servicios que gestionan la comunicación con el backend, incluyendo las peticiones a la API.
-*   **`/src/types`**: Definiciones de tipos TypeScript para mejorar la seguridad y la claridad del código.
-*   **`/src/constants`**: Constantes y configuraciones globales de la aplicación, como límites y URLs.
+## 🛠️ Tech Stack
 
-## Componentes Principales
+| Technology                                    | Purpose                        |
+| --------------------------------------------- | ------------------------------ |
+| [React 18](https://reactjs.org/)              | UI library with hooks          |
+| [TypeScript](https://www.typescriptlang.org/) | Type-safe JavaScript           |
+| [Tailwind CSS](https://tailwindcss.com/)      | Utility-first CSS framework    |
+| [Vite](https://vitejs.dev/)                   | Fast build tool and dev server |
 
-### `RecipeGenerator (Index)`
+## 🏗️ Architecture
 
-*   Componente principal que integra toda la funcionalidad de la aplicación.
-*   Contiene:
-    *   Formulario para ingresar ingredientes.
-    *   Selector de preferencias dietéticas.
-    *   Input para el tiempo máximo de preparación.
-    *   Área para mostrar la receta generada.
-    *   Manejo de estados de carga y errores.
+```
+src/
+├── components/
+│   └── RecipeGenerator/
+│       ├── Index.tsx           # Main container
+│       ├── IngredientList.tsx  # Ingredient management
+│       ├── LoadingButton.tsx   # Async button component
+│       ├── ErrorMessage.tsx    # Error display
+│       └── RecipeDetails.tsx   # Recipe result display
+├── hooks/
+│   └── useRecipeGenerator.ts   # Custom hook for state management
+├── services/
+│   └── recipeApi.ts            # API client
+├── types/
+│   └── recipe.ts               # TypeScript definitions
+├── constants/
+│   └── recipe.ts               # App constants
+└── App.jsx                     # Root component
+```
 
-### Subcomponentes
+### Component Hierarchy
 
-*   **`IngredientList`**: Permite a los usuarios agregar y eliminar ingredientes de la lista.
-*   **`LoadingButton`**: Botón que muestra un estado de carga mientras se realiza una petición al backend.
-*   **`ErrorMessage`**: Muestra mensajes de error de forma clara y consistente.
-*   **`RecipeDetails`**: Muestra los detalles de la receta generada, incluyendo título, ingredientes, instrucciones, tiempo de preparación y dificultad.
+```
+App
+ └── RecipeGenerator (Index)
+      ├── IngredientList
+      ├── LoadingButton
+      ├── ErrorMessage
+      └── RecipeDetails
+```
 
-## Tipos y Interfaces
+## 🧩 Components
 
-### `Recipe`
+### Main Components
+
+#### `RecipeGenerator (Index)`
+
+**Purpose:** Main container component
+
+**Features:**
+
+- Ingredient input form
+- Dietary preference selector
+- Preparation time input
+- Recipe display area
+- Loading and error state management
+
+#### `IngredientList`
+
+**Purpose:** Manage ingredient list
+
+**Props:**
+
 ```typescript
-interface Recipe {
-    title: string;
-    ingredients: string[];
-    instructions: string[];
-    preparationTime: number;
-    difficulty: string;
+interface IngredientListProps {
+  ingredients: string[];
+  onRemove: (index: number) => void;
 }
 ```
-*   Define la estructura de las opciones dietéticas, con un valor que se utiliza internamente y una etiqueta para mostrar al usuario.
 
-## Constantes y Configuración
+**Features:**
 
-### `CONSTANTS`
+- Display ingredient chips
+- Remove ingredients
+- Visual feedback
 
-*   **`MAX_INGREDIENTS`**: `20` (Número máximo de ingredientes permitidos).
-*   **`MIN_PREP_TIME`**: `1` (Tiempo mínimo de preparación en minutos).
-*   **`MAX_PREP_TIME`**: `480` (Tiempo máximo de preparación en minutos).
-*   **`API_URL`**: `"http://localhost:5000/api/recipes/generate"` (URL del endpoint del backend para generar recetas).
+#### `LoadingButton`
 
-### Opciones Dietéticas
+**Purpose:** Async action button with loading state
 
-*   **Ninguna**
-*   **Vegetariana**
-*   **Vegana**
-*   **Sin Gluten**
+**Props:**
 
-## Hooks Personalizados
+```typescript
+interface LoadingButtonProps {
+  isLoading: boolean;
+  disabled: boolean;
+  onClick: () => void;
+}
+```
+
+**States:**
+
+- Default: "Buscar Receta"
+- Loading: Spinner + "Generando..."
+
+#### `ErrorMessage`
+
+**Purpose:** Display error messages
+
+**Props:**
+
+```typescript
+interface ErrorMessageProps {
+  message: string;
+}
+```
+
+**Features:**
+
+- Styled error container
+- Icon indicator
+- `data-testid` for testing
+
+#### `RecipeDetails`
+
+**Purpose:** Display generated recipe
+
+**Props:**
+
+```typescript
+interface RecipeDetailsProps {
+  recipe: Recipe;
+}
+```
+
+**Displays:**
+
+- Recipe title
+- Preparation time
+- Difficulty level
+- Ingredient list
+- Step-by-step instructions
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18.x or higher
+- pnpm (recommended) or npm
+
+### Installation
+
+1. **Navigate to frontend directory:**
+
+   ```bash
+   cd frontend
+   ```
+
+2. **Install dependencies:**
+
+   ```bash
+   pnpm install
+   ```
+
+3. **Configure environment:**
+   Create `.env.local`:
+
+   ```env
+   VITE_API_URL=http://localhost:5000/api/recipes/generate
+   ```
+
+4. **Start development server:**
+
+   ```bash
+   pnpm dev
+   ```
+
+5. **Access the application:**
+   ```
+   http://localhost:5173
+   ```
+
+### Build for Production
+
+```bash
+# Create optimized build
+pnpm build
+
+# Preview production build
+pnpm preview
+```
+
+## ✨ Features
+
+### Core Functionality
+
+- ✅ **Ingredient Management**: Add/remove ingredients dynamically
+- ✅ **Dietary Filters**: Vegetarian, vegan, gluten-free options
+- ✅ **Time Constraints**: Configurable max preparation time
+- ✅ **Real-time Validation**: Input validation with user feedback
+- ✅ **Loading States**: Visual feedback during API calls
+- ✅ **Error Handling**: User-friendly error messages
+
+### UI/UX Features
+
+- 🎨 **Modern Design**: Clean, intuitive interface
+- 📱 **Responsive Layout**: Mobile-first design
+- ⚡ **Smooth Animations**: Transitions and hover effects
+- 🔄 **Loading Indicators**: Clear async operation feedback
+- ❌ **Error Messages**: Descriptive error handling
+- ♿ **Accessibility**: Semantic HTML and ARIA labels
+
+## 🔧 Configuration
+
+### Constants
+
+```typescript
+export const CONSTANTS = {
+  MAX_INGREDIENTS: 20,
+  MIN_PREP_TIME: 1,
+  MAX_PREP_TIME: 480,
+  API_URL:
+    import.meta.env.VITE_API_URL ||
+    "http://localhost:5000/api/recipes/generate",
+} as const;
+```
+
+### Dietary Options
+
+```typescript
+export const dietOptions: DietOption[] = [
+  { value: "", label: "Tipo de dieta" },
+  { value: "vegetarian", label: "Vegetariana" },
+  { value: "vegan", label: "Vegana" },
+  { value: "gluten-free", label: "Sin Gluten" },
+];
+```
+
+## 🪝 Custom Hooks
 
 ### `useRecipeGenerator`
 
-*   Gestiona la lógica principal de la aplicación, incluyendo:
-    *   El estado de la lista de ingredientes.
-    *   Las preferencias dietéticas seleccionadas.
-    *   El tiempo de preparación especificado.
-    *   Los estados de carga y error.
-    *   La lógica para generar la receta mediante la llamada a la API.
+**Purpose:** Centralized state management for recipe generation
 
-## Servicios
+**State Management:**
 
-### `recipeApi`
+```typescript
+const {
+  ingredients, // string[]
+  currentIngredient, // string
+  dietPreference, // string
+  maxPreparationTime, // string
+  recipe, // Recipe | null
+  isLoading, // boolean
+  error, // string | null
+  addIngredient, // () => void
+  removeIngredient, // (index: number) => void
+  handleSubmit, // () => Promise<void>
+} = useRecipeGenerator();
+```
 
-*   Maneja la comunicación con el backend.
-*   Incluye:
-    *   **`generateRecipe`**: Método para enviar una petición al backend con los datos del formulario y recibir la receta generada.
-    *   Validación de las respuestas del backend.
-    *   Manejo de errores de la API.
+**Features:**
 
-## Estilos
+- Ingredient list management
+- Form state handling
+- API call orchestration
+- Error state management
+- Loading state control
 
-*   Utiliza **Tailwind CSS** para un desarrollo rápido y flexible de estilos.
-*   Diseño **responsivo** que se adapta a diferentes tamaños de pantalla, ofreciendo una experiencia de usuario óptima en dispositivos móviles, tabletas y ordenadores de escritorio.
-*   Utiliza **gradientes y sombras** para mejorar la apariencia visual de los elementos.
-*   Incluye **animaciones y transiciones suaves** para mejorar la experiencia del usuario.
+## 📡 API Integration
 
-## Características de UI/UX
+### `recipeApi.ts`
 
-*   **Interfaz limpia y moderna**: Diseño intuitivo y fácil de usar.
-*   **Feedback visual para acciones del usuario**: Los usuarios reciben retroalimentación visual clara al interactuar con la aplicación.
-*   **Indicadores de carga**: Muestra un indicador de carga mientras se espera la respuesta del backend.
-*   **Mensajes de error claros**: Los mensajes de error son descriptivos y ayudan al usuario a entender qué ha salido mal.
-*   **Animaciones suaves**: Las animaciones mejoran la experiencia del usuario, haciendo que la interacción sea más fluida y agradable.
-*   **Diseño adaptable**: La aplicación se adapta a diferentes tamaños de pantalla, ofreciendo una experiencia consistente en todos los dispositivos.
+**Purpose:** HTTP client for backend communication
 
-## Validaciones
+```typescript
+export const generateRecipe = async ({
+  ingredients,
+  dietPreference,
+  maxPreparationTime,
+}: GenerateRecipeParams): Promise<Recipe> => {
+  const response = await fetch(CONSTANTS.API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({
+      ingredients,
+      dietPreference,
+      maxPreparationTime,
+    }),
+  });
 
-*   **Límite máximo de ingredientes**: La aplicación valida que el número de ingredientes no exceda el límite máximo definido en las constantes.
-*   **Tiempo de preparación válido**: Se asegura de que el tiempo de preparación esté dentro del rango válido definido en las constantes.
-*   **Ingredientes no duplicados**: Evita que los usuarios ingresen ingredientes duplicados en la lista.
-*   **Campos requeridos**: Valida que los campos obligatorios estén completos antes de enviar la petición al backend.
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(
+      errorData.error?.message || "Error en la respuesta del servidor"
+    );
+  }
 
-## Manejo de Errores
+  return await response.json();
+};
+```
 
-*   **Mensajes de error visuales**: Los errores se muestran al usuario de forma clara y visible en la interfaz.
-*   **Validación de datos de entrada**: La aplicación valida los datos de entrada para prevenir errores y asegurar que la información enviada al backend sea correcta.
-*   **Manejo de errores de API**: La aplicación maneja los errores que puedan ocurrir al comunicarse con el backend, mostrando mensajes de error apropiados al usuario.
-*   **Feedback al usuario**: Proporciona retroalimentación al usuario en caso de errores, indicando qué ha salido mal y cómo puede solucionarlo.
+## 🎨 Styling
 
-## Requisitos del Sistema
+### Tailwind CSS Approach
 
-*   **Node.js**: Entorno de ejecución de JavaScript.
-*   **npm** o **yarn**: Gestores de paquetes para instalar las dependencias del proyecto.
-*   **Navegador moderno con soporte para ES6+**: La aplicación requiere un navegador web actualizado que soporte las últimas características de JavaScript.
+- **Utility-first**: Rapid development with utility classes
+- **Responsive**: Mobile-first breakpoints
+- **Custom Colors**: Indigo color scheme
+- **Gradients**: Visual depth and modern look
+- **Shadows**: Elevation and hierarchy
+- **Transitions**: Smooth interactions
 
-## Inicio del Proyecto
+### Key Design Patterns
 
-1.  **Instalar dependencias**:
-    ```bash
-    npm install
-    ```
-    o
-    ```bash
-    yarn install
-    ```
-2.  **Iniciar en desarrollo**:
-    ```bash
-    npm run dev
-    ```
-    o
-    ```bash
-    yarn dev
-    ```
-    Esto iniciará el servidor de desarrollo de Vite y abrirá la aplicación en tu navegador.
-3.  **Construir para producción**:
-    ```bash
-    npm run build
-    ```
-    o
-    ```bash
-    yarn build
-    ```
-    Esto generará una versión optimizada de la aplicación lista para ser desplegada en un entorno de producción.
+```css
+/* Card Container */
+.max-w-3xl.w-full.mx-auto.bg-white.rounded-2xl.shadow-xl
 
-## Consideraciones de Desarrollo
+/* Primary Button */
+.bg-gradient-to-r.from-indigo-600.to-indigo-700.hover:from-indigo-700
 
-*   **Código TypeScript tipado**: El código está escrito en TypeScript, lo que mejora la mantenibilidad y la detección de errores en tiempo de desarrollo.
-*   **Componentes funcionales con hooks**: La aplicación utiliza componentes funcionales y hooks de React para una gestión de estado más eficiente y un código más limpio.
-*   **Patrones de diseño React modernos**: Se siguen patrones de diseño React modernos para una mejor organización del código y una mayor reutilización de componentes.
-*   **Gestión de estado local**: La aplicación utiliza el estado local de React para gestionar el estado de los componentes.
+/* Input Field */
+.border-2.border-gray-200.focus:ring-2.focus:ring-indigo-500
+```
 
-Para cualquier duda o problema contáctame en <a href="mailto:angelruiznadal@gmail.com">angelruiznadal@gmail.com</a>
+## ✅ Validation
+
+### Input Validation Rules
+
+| Field            | Validation                             |
+| ---------------- | -------------------------------------- |
+| Ingredients      | Max 20 items, no duplicates, non-empty |
+| Preparation Time | 1-480 minutes range                    |
+| Diet Preference  | Valid option from predefined list      |
+
+### Error States
+
+- Empty ingredient input
+- Duplicate ingredients
+- Maximum ingredients reached
+- Invalid preparation time
+- API errors
+
+## 🧪 Testing
+
+The frontend is covered by E2E tests using Playwright. See the main [TESTING.md](../TESTING.md) for details.
+
+### Test Coverage
+
+- ✅ Homepage rendering
+- ✅ Ingredient management
+- ✅ Form validation
+- ✅ Recipe generation flow
+- ✅ Error handling
+
+## 🔄 Development Workflow
+
+### Development Mode
+
+```bash
+pnpm dev
+```
+
+Features:
+
+- Hot Module Replacement (HMR)
+- Fast refresh for instant updates
+- Source maps for debugging
+- Development server on port 5173
+
+### Type Checking
+
+```bash
+# Run TypeScript compiler for type validation
+pnpm tsc --noEmit
+```
+
+### Linting
+
+```bash
+# Run ESLint for code quality
+pnpm lint
+```
+
+## 📦 Build Output
+
+```bash
+pnpm build
+```
+
+Generates optimized production build in `dist/`:
+
+- Minified JavaScript bundles
+- Optimized and purged CSS
+- Compressed assets
+- Intelligent code splitting
+- Tree-shaking for smaller bundle size
+
+## 📧 Contact
+
+**Ángel Ruiz Nadal**
+
+- Email: [angelruiznadal@gmail.com](mailto:angelruiznadal@gmail.com)
+- GitHub: [@Angelgx298](https://github.com/Angelgx298)
+- LinkedIn: [linkedin.com/in/angel-ruiz-nadal](https://www.linkedin.com/in/angel-ruiz-nadal)
+
+---
+
+[← Back to Main README](../README.md)
+

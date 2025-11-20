@@ -2,14 +2,14 @@
 
 ## Environment Setup
 
-Para que los tests funcionen correctamente, necesitas configurar la API key del backend.
+To ensure tests run correctly, you need to configure the backend API key.
 
-### Paso 1: Crear archivo .env en backend
+### Step 1: Create .env File in Backend
 
 ```bash
 cd backend
 cat > .env << 'EOF'
-GROQ_API_KEY=tu_clave_api_aqui
+GROQ_API_KEY=your_api_key_here
 PORT=5000
 NODE_ENV=development
 FRONTEND_URL=http://localhost:5173
@@ -17,74 +17,79 @@ EOF
 cd ..
 ```
 
-Reemplaza `tu_clave_api_aqui` con tu clave real de GROQ.
+Replace `your_api_key_here` with your actual Groq API key from [console.groq.com](https://console.groq.com/).
 
-### Paso 2: Verificar que los servidores funcionan manualmente
+### Step 2: Verify Servers Manually
 
-Antes de ejecutar los tests, verifica que ambos servidores funcionan:
+Before running tests, verify that both servers are working correctly:
 
 ```bash
-# Terminal 1: Backend
+# Terminal 1: Backend Server
 cd backend
 pnpm start
 
-# Terminal 2: Frontend
+# Terminal 2: Frontend Development Server
 cd frontend
 pnpm dev
 ```
 
-Luego abre `http://localhost:5173` en tu navegador y prueba generar una receta manualmente.
+Then open `http://localhost:5173` in your browser and try generating a recipe manually to ensure the integration works.
 
-### Paso 3: Ejecutar los tests
+### Step 3: Run the Tests
 
-Una vez verificado que todo funciona manualmente:
+Once verified that everything works manually:
 
 ```bash
-# Asegúrate de estar en la raíz del proyecto
+# Ensure you are in the project root directory
 pnpm test
 ```
 
 ## Troubleshooting
 
-### Error "failed to fetch"
+### "Failed to Fetch" Error
 
-Este error indica que el frontend no puede conectarse al backend. Verifica:
+This error indicates that the frontend cannot connect to the backend API. Verify:
 
-1. ✅ El archivo `backend/.env` existe y tiene `GROQ_API_KEY`
-2. ✅ El backend se inicia correctamente en el puerto 5000
-3. ✅ No hay otros procesos usando el puerto 5000 o 5173
+1. ✅ The `backend/.env` file exists and contains a valid `GROQ_API_KEY`
+2. ✅ The backend server is running correctly on port 5000
+3. ✅ No other processes are using ports 5000 or 5173
 
-Para verificar puertos:
+To check which processes are using the ports:
 ```bash
-# Ver qué está usando el puerto 5000
+# Check what is using port 5000
 lsof -i :5000
 
-# Ver qué está usando el puerto 5173
+# Check what is using port 5173
 lsof -i :5173
 ```
 
-### Los servidores no se detienen
+### Servers Won't Stop
 
-Si Playwright se interrumpe y los servidores quedan corriendo:
+If Playwright is interrupted and servers remain running in the background:
 
 ```bash
-# Matar procesos en los puertos
+# Kill all related processes
 pkill -f "pnpm.*start"
 pkill -f "pnpm.*dev"
 ```
 
-## Modo interactivo
+## Interactive Test Mode
 
-Para ver los tests en modo UI:
+To debug tests or view them running in UI mode:
 
 ```bash
 pnpm exec playwright test --ui
 ```
 
-## Ver el reporte HTML
+## View HTML Test Report
 
-Después de ejecutar los tests:
+After running tests, view the detailed HTML report:
 
 ```bash
 pnpm exec playwright show-report
 ```
+
+## Additional Resources
+
+For more information about the test suite and architecture, see the main [README.md](./README.md#-testing).
+
