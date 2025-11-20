@@ -1,0 +1,38 @@
+name: Playwright Tests
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
+    - uses: pnpm/action-setup@v4
+      with:
+        version: 9
+    - name: Install dependencies
+      run: pnpm install
+    - name: Create backend .env file
+      run: |
+        cd backend
+        echo "GROQ_API_KEY=${{ secrets.GROQ_API_KEY }}" > .env
+        echo "PORT=5000" >> .env
+        echo "NODE_ENV=test" >> .env
+        echo "FRONTEND_URL=http://localhost:5173" >> .env
+        cd ..
+    - name: Install Playwright Browsers
+      run: pnpm exec playwright install --with-deps
+    - name: Run Playwright tests
+      run: pnpm exec playwright test
+    - uses: actions/upload-artifact@v4
+      if: ${{ !cancelled() }}
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 30

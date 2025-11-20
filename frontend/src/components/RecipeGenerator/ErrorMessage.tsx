@@ -5,7 +5,7 @@ interface ErrorMessageProps {
 }
 
 export const ErrorMessage: React.FC<ErrorMessageProps> = ({ message }) => (
-    <div className="p-4 bg-red-50 border-l-4 border-red-500 rounded-r-lg">
+    <div className="p-4 bg-red-50 border-l-4 border-red-500 rounded-r-lg" data-testid="error-message">
         <div className="flex">
             <div className="flex-shrink-0">
                 <svg
