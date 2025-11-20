@@ -10,11 +10,16 @@ export const createApp = () => {
 
     // Configuración de CORS
     const corsOptions = {
-        origin: CONFIG.NODE_ENV === 'production' 
-            ? [CONFIG.FRONTEND_URL]
-            : ['http://localhost:5173', 'http://localhost:3000', 'http://localhost:5000'],
+        origin:
+            CONFIG.NODE_ENV === "production"
+                ? [CONFIG.FRONTEND_URL]
+                : [
+                      "http://localhost:5173",
+                      "http://localhost:3000",
+                      "http://localhost:5000",
+                  ],
         credentials: true,
-        optionsSuccessStatus: 200
+        optionsSuccessStatus: 200,
     };
 
     // Middleware globales

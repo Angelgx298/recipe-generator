@@ -4,13 +4,15 @@
     "main": "index.js",
     "type": "module",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "echo \"No unit tests specified\" && exit 0",
         "start": "node server.js",
-        "dev": "nodemon server.js"
+        "dev": "nodemon server.js",
+        "lint": "eslint .",
+        "format": "prettier --write ."
     },
     "keywords": [],
     "author": "",
-    "license": "ISC",
+    "license": "MIT",
     "description": "",
     "dependencies": {
         "axios": "^1.7.9",
@@ -21,6 +23,10 @@
         "llamaai": "^1.0.4"
     },
     "devDependencies": {
-        "nodemon": "^3.1.7"
+        "eslint": "^8.57.0",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-plugin-node": "^11.1.0",
+        "nodemon": "^3.1.7",
+        "prettier": "^3.2.5"
     }
 }

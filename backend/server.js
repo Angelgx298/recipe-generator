@@ -6,10 +6,10 @@ const app = createApp();
 const startServer = async () => {
     try {
         app.listen(CONFIG.PORT, () => {
-            console.log(`Servidor corriendo en puerto ${CONFIG.PORT}`);
+            console.log(`Server running on port ${CONFIG.PORT}`);
         });
     } catch (error) {
-        console.error("Error al iniciar el servidor:", error);
+        console.error("Error starting server:", error);
         process.exit(1);
     }
 };

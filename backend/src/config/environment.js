@@ -1,14 +1,14 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-const requiredEnvVars = ['GROQ_API_KEY'];
+const requiredEnvVars = ["GROQ_API_KEY"];
 
 function validateEnv() {
-    const missing = requiredEnvVars.filter(key => !process.env[key]);
+    const missing = requiredEnvVars.filter((key) => !process.env[key]);
     if (missing.length > 0) {
         throw new Error(
-            `Faltan variables de entorno requeridas: ${missing.join(', ')}\n` +
-            'Por favor configura el archivo .env según .env.example'
+            `Faltan variables de entorno requeridas: ${missing.join(", ")}\n` +
+                "Por favor configura el archivo .env según .env.example"
         );
     }
 }

@@ -2,7 +2,7 @@ import "./App.css";
 import Index from "./components/RecipeGenerator/Index.tsx";
 
 function App() {
-    return <Index />;
+  return <Index />;
 }
 
 export default App;

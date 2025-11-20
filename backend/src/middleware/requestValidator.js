@@ -1,5 +1,5 @@
 export const validateRecipeRequest = (req, res, next) => {
-    const { ingredients, dietPreference, maxPreparationTime } = req.body;
+    const { ingredients, maxPreparationTime } = req.body;
 
     if (
         !ingredients ||
